@@ -13,41 +13,46 @@ cap = cv2.VideoCapture(0) #this is my webcam
 lower_bound = np.array([0, 0, 0])
 upper_bound = np.array([0, 0, 0])
 lower_bounds = {
-    "blue" : np.array([80, 120, 10]),
-    "white" : np.array([0, 0, 168]),
-    "green" : np.array([50, 80, 50]),
-    "blank" : np.array([0, 60, 0]),
-    "black" : np.array([0, 0, 0])
+    "white": np.array([0, 0, 180]),
+    "green": np.array([55, 80, 60]),
+    "blue": np.array([80, 120, 10]),
+    "black": np.array([0, 0, 0]),
+    "red" : np.array([0, 15, 90]),
+    "red2": np.array([170, 15, 90])
 }
 upper_bounds = {
-    "blue": np.array([130, 255, 255]),
-    "white": np.array([172, 111, 255]),
+    "white": np.array([170, 105, 255]),
     "green": np.array([90, 255, 255]),
-    "blank": np.array([255, 255, 255]),
-    "black" : np.array([255, 0, 10])
+    "blue": np.array([130, 255, 255]),
+    "black" : np.array([255, 0, 10]),
+    "red": np.array([30, 255, 255]),
+    "red2": np.array([180,255,255])
     }
 while True:
     try:
         print("\nColour List;")
         print("blue\nwhite\ngreen\nblank\nblack")
-        colour = input("Please type the colour of your cloak: ")
+        hue = input("Please type the colour of your cloak: ")
         
-        key = colour
-        if key == ('blue'):
-            lower_bound = lower_bounds["blue"]
-            upper_bound = upper_bounds["blue"]
-            break
-        elif key == ('white'):
+        if hue == ('white'):
             lower_bound = lower_bounds["white"]
             upper_bound = upper_bounds["white"]
             break
-        elif key == ('green'):
+        elif hue == ('green'):
             lower_bound = lower_bounds["green"]
             upper_bound = upper_bounds["green"]
             break
-        elif key == ('black'):
+        elif hue == ('blue'):
+            lower_bound = lower_bounds["blue"]
+            upper_bound = upper_bounds["blue"]
+            break
+        elif hue == ('black'):
             lower_bound = lower_bounds["black"]
             upper_bound = upper_bounds["black"]
+            break
+        elif hue == 'red':
+            lower_bound = lower_bounds["red"]
+            upper_bound = upper_bounds["red"]
             break
         else:
             print("Invalid Input, please enter a value listed")
@@ -65,7 +70,13 @@ while cap.isOpened():
         break
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     #all this Comes in the while loop
+    if hue == 'red':
+        lower_bound = lower_bounds['red']
+        upper_bound = upper_bounds['red']
     mask1 = cv2.inRange(hsv, lower_bound,upper_bound)
+    if hue == 'red':
+        lower_bound = lower_bounds['red2']
+        upper_bound = upper_bounds['red2']
     mask2 = cv2.inRange(hsv, lower_bound,upper_bound)
 #Combining the masks so that It can be viewd as in one frame
     mask1 = mask1 + mask2
